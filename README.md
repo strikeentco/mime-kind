@@ -1,5 +1,6 @@
 mime-kind
 ==========
+[![Build Status](https://travis-ci.org/strikeentco/mime-kind.svg)](https://travis-ci.org/strikeentco/mime-kind) [![License](https://img.shields.io/github/license/strikeentco/mime-kind.svg?style=flat)](https://github.com/strikeentco/mime-kind/blob/master/LICENSE)  [![npm](https://img.shields.io/npm/v/mime-kind.svg?style=flat)](https://www.npmjs.com/package/mime-kind) [![Test Coverage](https://codeclimate.com/github/strikeentco/mime-kind/badges/coverage.svg)](https://codeclimate.com/github/strikeentco/mime-kind/coverage) [![bitHound Score](https://www.bithound.io/github/strikeentco/mime-kind/badges/score.svg)](https://www.bithound.io/github/strikeentco/mime-kind)
 
 Detect the mime type of a Buffer, ReadStream, file path and file name.
 
