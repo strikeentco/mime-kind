@@ -42,10 +42,10 @@ function chunkSync(data, length) {
 
 function streamSync(stream, length) {
   if (!stream.closed && !stream.destroyed && length > 0) {
-    var state = stream._readableState;
+    /*var state = stream._readableState;*/
     try {
       var buf = chunkSync(stream, length/* || state.highWaterMark*/);
-      stream.emit('end');
+      /*stream.emit('end');*/
 
       return buf;
     } catch (e) {
@@ -55,7 +55,7 @@ function streamSync(stream, length) {
   } else {
     return false;
   }
-};
+}
 
 module.exports = function(data, defaultValue) {
   var type;

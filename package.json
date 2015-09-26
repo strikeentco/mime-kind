@@ -1,7 +1,7 @@
 {
   "name": "mime-kind",
   "author": "Alexey Bystrov <strikeentco@gmail.com>",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Detect the mime type of a Buffer, ReadStream, file path and file name.",
   "keywords": [
     "file",
