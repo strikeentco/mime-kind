@@ -9,8 +9,7 @@ function isObject(val) {
 }
 
 function isStream(stream) {
-  return stream && typeof stream === 'object' && typeof stream.pipe === 'function' && stream.readable !== false
-  && typeof stream._read === 'function' && typeof stream._readableState === 'object';
+  return stream && typeof stream === 'object' && typeof stream.pipe === 'function' && stream.readable !== false && typeof stream._read === 'function' && typeof stream._readableState === 'object';
 }
 
 function isExists(path) {
@@ -41,15 +40,20 @@ function chunkSync(data, length) {
 }
 
 function streamSync(stream, length) {
+  var buf;
   if (!stream.closed && !stream.destroyed && length > 0) {
-    /*var state = stream._readableState;*/
     try {
-      var buf = chunkSync(stream, length/* || state.highWaterMark*/);
-      /*stream.emit('end');*/
+      var data = {
+        path: stream.path,
+        flags: stream.flags,
+        mode: stream.mode,
+        fd: stream.fd
+      };
+
+      buf = chunkSync(data, length);
 
       return buf;
     } catch (e) {
-      stream.emit('end');
       throw new Error('The file must be local and exists.');
     }
   } else {
