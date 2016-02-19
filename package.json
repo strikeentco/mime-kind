@@ -1,7 +1,7 @@
 {
   "name": "mime-kind",
   "author": "Alexey Bystrov <strikeentco@gmail.com>",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Detect the mime type of a Buffer, ReadStream, file path and file name.",
   "keywords": [
     "file",
@@ -26,7 +26,7 @@
     "url": "https://github.com/strikeentco/mime-kind/issues"
   },
   "dependencies": {
-    "file-type": "^2.12.0",
+    "file-type": "^3.7.0",
     "mime-types": "^2.1.7"
   },
   "devDependencies": {
