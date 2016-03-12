@@ -1,7 +1,7 @@
 {
   "name": "mime-kind",
   "author": "Alexey Bystrov <strikeentco@gmail.com>",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Detect the mime type of a Buffer, ReadStream, file path and file name.",
   "keywords": [
     "file",
@@ -14,6 +14,9 @@
     "detect"
   ],
   "main": "./main.js",
+  "files": [
+    "main.js"
+  ],
   "scripts": {
     "test": "mocha test",
     "test-on-travis": "istanbul cover --report lcovonly ./node_modules/mocha/bin/_mocha"
@@ -26,12 +29,12 @@
     "url": "https://github.com/strikeentco/mime-kind/issues"
   },
   "dependencies": {
-    "file-type": "^3.7.0",
-    "mime-types": "^2.1.7"
+    "file-type": "^3.8.0",
+    "mime-types": "^2.1.10"
   },
   "devDependencies": {
-    "mocha": "^2.3.3",
-    "should": "^7.1.0"
+    "mocha": "^2.4.5",
+    "should": "^8.2.2"
   },
   "license": "MIT"
 }

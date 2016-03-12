@@ -1,6 +1,7 @@
 'use strict';
 
 var fs = require('fs');
+var normalize = require('path').normalize;
 var fileType = require('file-type');
 var mime = require('mime-types');
 
@@ -14,7 +15,7 @@ function isStream(stream) {
 
 function isExists(path) {
   try {
-    fs.accessSync(require('path').normalize(path));
+    fs.accessSync(normalize(path));
     return true;
   } catch (e) {
     return false;
@@ -25,7 +26,7 @@ function chunkSync(data, length) {
   var buf = new Buffer(length);
 
   if (!data.fd) {
-    data.path = require('path').normalize(data.path);
+    data.path = normalize(data.path);
     if (isExists(data.path)) {
       data.fd = fs.openSync(data.path, data.flags, data.mode);
     } else {
@@ -40,7 +41,6 @@ function chunkSync(data, length) {
 }
 
 function streamSync(stream, length) {
-  var buf;
   if (!stream.closed && !stream.destroyed && length > 0) {
     try {
       var data = {
@@ -50,9 +50,7 @@ function streamSync(stream, length) {
         fd: stream.fd
       };
 
-      buf = chunkSync(data, length);
-
-      return buf;
+      return chunkSync(data, length);
     } catch (e) {
       throw new Error('The file must be local and exists.');
     }
@@ -61,14 +59,14 @@ function streamSync(stream, length) {
   }
 }
 
-module.exports = function(data, defaultValue) {
+module.exports = function (data, defaultValue) {
   var type;
   var ext;
 
   if (typeof data === 'string') {
     type = mime.lookup(data);
     if (!type && isExists(data)) {
-      type = fileType(chunkSync({path: data, flags: 'r'}, 262));
+      type = fileType(chunkSync({ path: data, flags: 'r' }, 262));
     }
   } else if (Buffer.isBuffer(data)) {
     type = fileType(data);
@@ -77,9 +75,11 @@ module.exports = function(data, defaultValue) {
   }
 
   if (type) {
-    !type.mime || (type = type.mime);
-    ext = mime.extension(type);
-    return {ext: ext, mime: type};
+    if (type.mime) {
+      return { ext: type.ext, mime: type.mime };
+    }
+
+    return { ext: mime.extension(type), mime: type };
   }
 
   if (defaultValue) {
@@ -107,7 +107,7 @@ module.exports = function(data, defaultValue) {
     }
 
     if (type && ext) {
-      return {ext: ext, mime: type};
+      return { ext: ext, mime: type };
     }
   }
 
