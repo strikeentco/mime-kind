@@ -1,16 +1,24 @@
 'use strict';
 
-var fs = require('fs');
-var normalize = require('path').normalize;
-var fileType = require('file-type');
-var mime = require('mime-types');
+const fs = require('fs');
+const normalize = require('path').normalize;
+const fileType = require('file-type');
+const mimeType = require('mime-types');
+
+const BUFFER_LENGTH = 262;
+
+function isString(val) {
+  return typeof val === 'string';
+}
 
 function isObject(val) {
   return Object.prototype.toString.call(val) === '[object Object]';
 }
 
-function isStream(stream) {
-  return stream && typeof stream === 'object' && typeof stream.pipe === 'function' && stream.readable !== false && typeof stream._read === 'function' && typeof stream._readableState === 'object';
+function isStream(val) {
+  return typeof val === 'object' && typeof val.pipe === 'function' &&
+    val.readable !== false && typeof val._read === 'function' &&
+    typeof val._readableState === 'object';
 }
 
 function isExists(path) {
@@ -22,9 +30,7 @@ function isExists(path) {
   }
 }
 
-function chunkSync(data, length) {
-  var buf = new Buffer(length);
-
+function chunkSync(data) {
   if (!data.fd) {
     data.path = normalize(data.path);
     if (isExists(data.path)) {
@@ -34,82 +40,73 @@ function chunkSync(data, length) {
     }
   }
 
-  fs.readSync(data.fd, buf, 0, length);
+  const buf = new Buffer(BUFFER_LENGTH);
+
+  fs.readSync(data.fd, buf, 0, BUFFER_LENGTH);
   fs.closeSync(data.fd);
 
   return buf;
 }
 
-function streamSync(stream, length) {
-  if (!stream.closed && !stream.destroyed && length > 0) {
-    try {
-      var data = {
-        path: stream.path,
-        flags: stream.flags,
-        mode: stream.mode,
-        fd: stream.fd
-      };
-
-      return chunkSync(data, length);
-    } catch (e) {
-      throw new Error('The file must be local and exists.');
-    }
-  } else {
-    return false;
+function streamSync(stream) {
+  if (!stream.closed && !stream.destroyed) {
+    return chunkSync(stream);
   }
+  return false;
 }
 
-module.exports = function (data, defaultValue) {
-  var type;
-  var ext;
-
-  if (typeof data === 'string') {
-    type = mime.lookup(data);
-    if (!type && isExists(data)) {
-      type = fileType(chunkSync({ path: data, flags: 'r' }, 262));
+module.exports = (data, defaultValue) => {
+  if (data) {
+    if (isString(data)) {
+      const mime = mimeType.lookup(data);
+      if (mime) {
+        return { ext: mimeType.extension(mime), mime };
+      }
+      if (isExists(data)) {
+        return fileType(chunkSync({ path: data, flags: 'r' }));
+      }
+    } else if (Buffer.isBuffer(data)) {
+      return fileType(data);
+    } else if (isStream(data)) {
+      return fileType(streamSync(data));
     }
-  } else if (Buffer.isBuffer(data)) {
-    type = fileType(data);
-  } else if (isStream(data)) {
-    type = fileType(streamSync(data, 262));
+
+    if (defaultValue) {
+      if (isObject(defaultValue)) {
+        let ext;
+        if (defaultValue.ext) {
+          ext = defaultValue.ext;
+          const mime = mimeType.lookup(ext);
+          if (mime) {
+            return { ext, mime };
+          }
+        }
+
+        if (defaultValue.mime || defaultValue.type) {
+          const mime = defaultValue.mime || defaultValue.type;
+          if (!ext) {
+            ext = mimeType.extension(mime);
+          }
+          if (ext) {
+            return { ext, mime };
+          }
+        }
+      } else if (isString(defaultValue)) {
+        let ext = mimeType.extension(defaultValue);
+        let mime = mimeType.lookup(defaultValue);
+
+        if (ext || mime) {
+          if (!mime) {
+            mime = mimeType.lookup(ext);
+          }
+          if (!ext) {
+            ext = mimeType.extension(mime);
+          }
+          return { ext, mime };
+        }
+      }
+    }
   }
 
-  if (type) {
-    if (type.mime) {
-      return { ext: type.ext, mime: type.mime };
-    }
-
-    return { ext: mime.extension(type), mime: type };
-  }
-
-  if (defaultValue) {
-    if (isObject(defaultValue)) {
-      if (defaultValue.ext) {
-        ext || (ext = defaultValue.ext);
-        type || (type = mime.lookup(ext));
-      }
-
-      if (defaultValue.mime || defaultValue.type) {
-        type || (type = defaultValue.mime || defaultValue.type);
-        ext || (ext = mime.extension(type));
-      }
-    } else if (typeof defaultValue === 'string') {
-      ext = mime.extension(defaultValue);
-      type = mime.lookup(defaultValue);
-
-      if (ext) {
-        type || (type = mime.lookup(ext));
-      }
-
-      if (type) {
-        ext || (ext = mime.extension(type));
-      }
-    }
-
-    if (type && ext) {
-      return { ext: ext, mime: type };
-    }
-  }
-
-  return false;
+  return null;
 };
