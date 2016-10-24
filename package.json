@@ -1,7 +1,7 @@
 {
   "name": "mime-kind",
   "author": "Alexey Bystrov <strikeentco@gmail.com>",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Detect the mime type of a Buffer, ReadStream, file path and file name.",
   "engines": {
     "node": ">=4.0.0"
@@ -35,17 +35,17 @@
     "url": "https://github.com/strikeentco/mime-kind/issues"
   },
   "dependencies": {
-    "file-type": "^3.8.0",
-    "mime-types": "^2.1.11"
+    "file-type": "^3.9.0",
+    "mime-types": "^2.1.12"
   },
   "devDependencies": {
-    "eslint": "^2.9.0",
-    "eslint-config-airbnb": "^9.0.1",
-    "eslint-plugin-import": "^1.14.0",
-    "eslint-plugin-jsx-a11y": "^1.2.0",
-    "eslint-plugin-react": "^5.1.1",
-    "mocha": "^3.0.2",
-    "should": "^11.1.0"
+    "eslint": "^3.8.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.4.1",
+    "mocha": "^3.1.2",
+    "should": "^11.1.1"
   },
   "license": "MIT"
 }

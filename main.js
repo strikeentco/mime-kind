@@ -70,40 +70,40 @@ module.exports = (data, defaultValue) => {
     } else if (isStream(data)) {
       return fileType(streamSync(data));
     }
+  }
 
-    if (defaultValue) {
-      if (isObject(defaultValue)) {
-        let ext;
-        if (defaultValue.ext) {
-          ext = defaultValue.ext;
-          const mime = mimeType.lookup(ext);
-          if (mime) {
-            return { ext, mime };
-          }
-        }
-
-        if (defaultValue.mime || defaultValue.type) {
-          const mime = defaultValue.mime || defaultValue.type;
-          if (!ext) {
-            ext = mimeType.extension(mime);
-          }
-          if (ext) {
-            return { ext, mime };
-          }
-        }
-      } else if (isString(defaultValue)) {
-        let ext = mimeType.extension(defaultValue);
-        let mime = mimeType.lookup(defaultValue);
-
-        if (ext || mime) {
-          if (!mime) {
-            mime = mimeType.lookup(ext);
-          }
-          if (!ext) {
-            ext = mimeType.extension(mime);
-          }
+  if (defaultValue) {
+    if (isObject(defaultValue)) {
+      let ext;
+      if (defaultValue.ext) {
+        ext = defaultValue.ext;
+        const mime = mimeType.lookup(ext);
+        if (mime) {
           return { ext, mime };
         }
+      }
+
+      if (defaultValue.mime || defaultValue.type) {
+        const mime = defaultValue.mime || defaultValue.type;
+        if (!ext) {
+          ext = mimeType.extension(mime);
+        }
+        if (ext) {
+          return { ext, mime };
+        }
+      }
+    } else if (isString(defaultValue)) {
+      let ext = mimeType.extension(defaultValue);
+      let mime = mimeType.lookup(defaultValue);
+
+      if (ext || mime) {
+        if (!mime) {
+          mime = mimeType.lookup(ext);
+        }
+        if (!ext) {
+          ext = mimeType.extension(mime);
+        }
+        return { ext, mime };
       }
     }
   }

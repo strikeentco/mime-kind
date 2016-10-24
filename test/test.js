@@ -1,10 +1,9 @@
 'use strict';
 
-/* eslint-disable max-len */
-
 const fs = require('fs');
 const should = require('should/as-function');
 const mime = require('../main');
+
 const fixtures = `${__dirname}/fixture`;
 
 function chunkSync(path) {
@@ -69,6 +68,7 @@ describe('mime()', () => {
   describe('when defaultValue is { ext: \'fake\', mime: \'fake/fake\' }', () => {
     it('should be equal { ext: \'fake\', mime: \'fake/fake\' }', () => {
       should(mime('.anonim', { ext: 'fake', mime: 'fake/fake' })).be.eql({ ext: 'fake', mime: 'fake/fake' });
+      should(mime(null, { ext: 'fake', mime: 'fake/fake' })).be.eql({ ext: 'fake', mime: 'fake/fake' });
     });
   });
 
