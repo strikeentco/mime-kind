@@ -48,4 +48,4 @@ mime('.fakeext', { ext: 'fake', mime: 'fake/fake' }); // -> { ext: 'fake', mime:
 ## License
 
 The MIT License (MIT)<br/>
-Copyright (c) 2015-2016 Alexey Bystrov
+Copyright (c) 2015-2017 Alexey Bystrov

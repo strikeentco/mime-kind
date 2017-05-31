@@ -57,18 +57,22 @@ function streamSync(stream) {
 
 module.exports = (data, defaultValue) => {
   if (data) {
+    let file = null;
     if (isString(data)) {
       const mime = mimeType.lookup(data);
       if (mime) {
         return { ext: mimeType.extension(mime), mime };
       }
       if (isExists(data)) {
-        return fileType(chunkSync({ path: data, flags: 'r' }));
+        file = fileType(chunkSync({ path: data, flags: 'r' }));
       }
     } else if (Buffer.isBuffer(data)) {
-      return fileType(data);
+      file = fileType(data);
     } else if (isStream(data)) {
-      return fileType(streamSync(data));
+      file = fileType(streamSync(data));
+    }
+    if (file != null) {
+      return file;
     }
   }
 

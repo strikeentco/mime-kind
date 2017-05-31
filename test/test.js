@@ -63,6 +63,10 @@ describe('mime()', () => {
     it('should be equal { ext: \'mp3\', mime: \'audio/mpeg\' }', () => {
       should(mime(chunkSync(`${fixtures}/fixture.mp3`))).be.eql({ ext: 'mp3', mime: 'audio/mpeg' });
     });
+
+    it('should be equal { ext: \'bin\', mime: \'application/octet-stream\' }', () => {
+      should(mime(new Buffer('binary data'), 'application/octet-stream')).be.eql({ ext: 'bin', mime: 'application/octet-stream' });
+    });
   });
 
   describe('when defaultValue is { ext: \'fake\', mime: \'fake/fake\' }', () => {
