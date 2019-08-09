@@ -26,7 +26,7 @@
   ],
   "scripts": {
     "test": "mocha test",
-    "lint": "npx eslint index.js utils.js",
+    "lint": "eslint index.js utils.js",
     "check": "npm run lint && npm run test",
     "cover": "nyc ./node_modules/mocha/bin/_mocha && nyc report --reporter=html",
     "test-on-travis": "nyc ./node_modules/mocha/bin/_mocha && nyc report --reporter=lcovonly"

@@ -1,6 +1,7 @@
 mime-kind [![License](https://img.shields.io/npm/l/mime-kind.svg)](https://github.com/strikeentco/mime-kind/blob/master/LICENSE) [![npm](https://img.shields.io/npm/v/mime-kind.svg)](https://www.npmjs.com/package/mime-kind)
 ==========
 [![Build Status](https://travis-ci.org/strikeentco/mime-kind.svg)](https://travis-ci.org/strikeentco/mime-kind) [![node](https://img.shields.io/node/v/mime-kind.svg)](https://www.npmjs.com/package/mime-kind) [![Test Coverage](https://api.codeclimate.com/v1/badges/5c3c2bdb323d9132a2f4/test_coverage)](https://codeclimate.com/github/strikeentco/mime-kind/test_coverage)
+
 Detect the MIME type of a `Buffer`, `Uint8Array`, `ArrayBuffer`, `ReadableStream`, file path and file name, with `sync` and `async` methods.
 
 ## Install
