@@ -1,10 +1,10 @@
 {
   "name": "mime-kind",
   "author": "Alexey Bystrov <strikeentco@gmail.com>",
-  "version": "2.0.2",
-  "description": "Detect the mime type of a Buffer, ReadStream, file path and file name.",
+  "version": "3.0.0",
+  "description": "Detect the MIME type of a Buffer, Uint8Array, ArrayBuffer, ReadableStream, file path and file name, with sync and async methods.",
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=7.6.0"
   },
   "keywords": [
     "file",
@@ -14,18 +14,22 @@
     "buffer",
     "stream",
     "read stream",
-    "detect"
+    "readable stream",
+    "detect",
+    "sync",
+    "async"
   ],
-  "main": "./main.js",
+  "main": "./index.js",
   "files": [
-    "main.js"
+    "index.js",
+    "utils.js"
   ],
   "scripts": {
     "test": "mocha test",
-    "lint": "eslint main.js",
+    "lint": "npx eslint index.js utils.js",
     "check": "npm run lint && npm run test",
-    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha",
-    "test-on-travis": "istanbul cover --report lcovonly ./node_modules/mocha/bin/_mocha"
+    "cover": "nyc ./node_modules/mocha/bin/_mocha && nyc report --reporter=html",
+    "test-on-travis": "nyc ./node_modules/mocha/bin/_mocha && nyc report --reporter=lcovonly"
   },
   "repository": {
     "type": "git",
@@ -35,17 +39,18 @@
     "url": "https://github.com/strikeentco/mime-kind/issues"
   },
   "dependencies": {
-    "file-type": "^4.3.0",
-    "mime-types": "^2.1.15"
+    "file-type": "^12.1.0",
+    "mime-types": "^2.1.24"
   },
   "devDependencies": {
-    "eslint": "^3.19.0",
-    "eslint-config-airbnb": "^15.0.1",
-    "eslint-plugin-import": "^2.3.0",
-    "eslint-plugin-jsx-a11y": "^5.0.3",
-    "eslint-plugin-react": "^7.0.1",
-    "mocha": "^3.4.2",
-    "should": "^11.2.1"
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.3",
+    "mocha": "^6.2.0",
+    "nyc": "^14.1.1",
+    "should": "^13.2.3"
   },
   "license": "MIT"
 }
