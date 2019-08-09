@@ -4,7 +4,7 @@
   "version": "3.0.0",
   "description": "Detect the MIME type of a Buffer, Uint8Array, ArrayBuffer, ReadableStream, file path and file name, with sync and async methods.",
   "engines": {
-    "node": ">=7.6.0"
+    "node": ">=8.3.0"
   },
   "keywords": [
     "file",

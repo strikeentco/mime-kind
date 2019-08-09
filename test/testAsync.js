@@ -40,7 +40,7 @@ describe('mime.async()', () => {
       should(await mime('.opus', 'application/octet-stream')).be.eql({ ext: 'bin', mime: 'application/octet-stream' });
     });
 
-    it('should throw', () => mime(new Readable()).catch(e => should(e.message).be.eql('The _read() method is not implemented')));
+    it('should throw', () => mime(new Readable()).catch(e => should(e.message).endWith('_read() method is not implemented')));
   });
 
   describe('when data is a stream', () => {
