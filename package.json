@@ -39,7 +39,7 @@
     "url": "https://github.com/strikeentco/mime-kind/issues"
   },
   "dependencies": {
-    "file-type": "^12.1.0",
+    "file-type": "^16.5.4",
     "mime-types": "^2.1.24"
   },
   "devDependencies": {
