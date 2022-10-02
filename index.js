@@ -1,10 +1,10 @@
 'use strict';
 
-const fileType = require('file-type');
+const { fromBuffer, fromFile } = require('file-type');
 const { lookup, extension } = require('mime-types');
 const {
-  isString, isObject, isBuffer, isStream, isExists, isExistsSync,
-  chunkAsync, chunkSync, streamChunk, BUFFER_LENGTH
+  isString, isObject, isBuffer, isStream, isExists,
+  streamChunk, BUFFER_LENGTH
 } = require('./utils');
 
 /**
@@ -47,45 +47,6 @@ function defaultData(data) {
 }
 
 /**
- * Synchronously determines MIME type of input
- * @param {String|Buffer|Uint8Array|ArrayBuffer|ReadableStream} input
- * @param {Object} [defaultValue]
- * @param {String} [defaultValue.ext]
- * @param {String} [defaultValue.mime]
- * @param {String} [defaultValue.type]
- * @returns {{ ext: String, mime: String }|null}
- */
-function sync(input, defaultValue) {
-  if (input) {
-    let file;
-    if (isString(input)) {
-      const mime = lookup(input);
-      if (mime) {
-        return { ext: extension(mime), mime };
-      }
-      if (isExistsSync(input)) {
-        const { bytesRead, buffer } = chunkSync({ path: input, flags: 'r' });
-        if (bytesRead && buffer) {
-          file = fileType(buffer);
-        }
-      }
-    } else if (isBuffer(input)) {
-      file = fileType(input);
-    } else if (isStream(input)) {
-      const { bytesRead, buffer } = chunkSync(input);
-      if (bytesRead && buffer) {
-        file = fileType(buffer);
-      }
-    }
-    if (file !== undefined && file !== null) {
-      return file;
-    }
-  }
-
-  return defaultData(defaultValue);
-}
-
-/**
  * Asynchronously determines MIME type of input
  * @param {String|Buffer|Uint8Array|ArrayBuffer|ReadableStream} input
  * @param {Object} [defaultValue]
@@ -104,17 +65,14 @@ async function async(input, defaultValue) {
         return { ext: extension(mime), mime };
       }
       if (await isExists(input)) {
-        const { bytesRead, buffer } = await chunkAsync({ path: input, flags: 'r' });
-        if (bytesRead && buffer) {
-          file = fileType(buffer);
-        }
+        file = await fromFile(input);
       }
     } else if (isBuffer(input)) {
-      file = fileType(input);
+      file = await fromBuffer(input);
     } else if (isStream(input)) {
       const chunk = await streamChunk(input);
       if (chunk) {
-        file = fileType(chunk);
+        file = await fromBuffer(chunk);
       }
     }
     if (file !== undefined && file !== null) {
@@ -126,6 +84,5 @@ async function async(input, defaultValue) {
 }
 
 module.exports = async;
-module.exports.sync = sync;
 module.exports.async = async;
 module.exports.BUFFER_LENGTH = BUFFER_LENGTH;

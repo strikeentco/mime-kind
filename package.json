@@ -1,10 +1,10 @@
 {
   "name": "mime-kind",
   "author": "Alexey Bystrov <strikeentco@gmail.com>",
-  "version": "3.0.0",
-  "description": "Detect the MIME type of a Buffer, Uint8Array, ArrayBuffer, ReadableStream, file path and file name, with sync and async methods.",
+  "version": "4.0.0",
+  "description": "Detect the MIME type of a Buffer, Uint8Array, ArrayBuffer, ReadableStream, file path and file name, with async method.",
   "engines": {
-    "node": ">=8.3.0"
+    "node": ">=10"
   },
   "keywords": [
     "file",
@@ -28,8 +28,7 @@
     "test": "mocha test",
     "lint": "eslint index.js utils.js",
     "check": "npm run lint && npm run test",
-    "cover": "nyc ./node_modules/mocha/bin/_mocha && nyc report --reporter=html",
-    "test-on-travis": "nyc ./node_modules/mocha/bin/_mocha && nyc report --reporter=lcovonly"
+    "cover": "nyc ./node_modules/mocha/bin/_mocha && nyc report --reporter=html"
   },
   "repository": {
     "type": "git",
@@ -39,16 +38,14 @@
     "url": "https://github.com/strikeentco/mime-kind/issues"
   },
   "dependencies": {
-    "file-type": "^12.1.0",
+    "file-type": "^16.5.4",
     "mime-types": "^2.1.24"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb": "^17.1.1",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.14.3",
-    "mocha": "^6.2.0",
+    "eslint": "^8.24.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "mocha": "^6.2.3",
     "nyc": "^14.1.1",
     "should": "^13.2.3"
   },
