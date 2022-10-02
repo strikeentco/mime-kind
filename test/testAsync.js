@@ -87,9 +87,6 @@ describe('mime.async()', () => {
 
   describe('when one of the arguments is wrong', () => {
     it('should be null', async () => {
-      const file = fs.createReadStream(`${fixtures}/fixture`);
-      file.emit('end');
-      should(await mime(file)).be.null();
       should(await mime()).be.null();
       should(await mime([])).be.null();
       should(await mime([], [])).be.null();
